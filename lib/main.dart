@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_app/styles/colors.dart';
+import 'package:todo_list_app/styles/styles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.green,
       ),
       home: TodoScreen(),
     );
@@ -26,7 +28,32 @@ class TodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Todo List")),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                bottom: 20,
+              ),
+              child: Text(
+                "To Do List",
+                style: appBarTitleStyle,
+              ),
+            ),
+            //SizedBox(width: 18),
+            // Expanded(
+            //   child: Image.asset(
+            //     "assets/images/todo_list_logo.png",
+            //     fit: BoxFit.scaleDown, //height: size.height * 0.2,
+            //   ),
+            // ),
+          ],
+        ),
+        backgroundColor: appBarcolor,
+        elevation: 0,
+      ),
       body: TodoList(),
     );
   }
@@ -76,72 +103,88 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: TextField(
-                  controller: myController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter new job',
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.15,
+      decoration: BoxDecoration(
+        color: appBarcolor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: TextField(
+                    controller: myController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter new job',
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
                   ),
                 ),
-              ),
-              TextButton(onPressed: add, child: Text("Add")),
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                for (var job in jobList) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        job.name,
-                        style: TextStyle(
-                            fontSize: 20,
-                            decoration: job.done
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none),
-                      ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white70,
-                            ),
-                            onPressed: job.done ? null : () => done(job),
-                            child: Text(
-                              "Done",
-                              style: TextStyle(color: Colors.green),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: () => remove(job),
-                            child: Text(
-                              "Remove",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                ],
+                SizedBox(
+              height: 15,
+            ),
+                TextButton(onPressed: add, child: Text("Add")),
               ],
             ),
-          ),
-        ],
+            SizedBox(
+              height: 5,
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (var job in jobList) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          job.name,
+                          style: TextStyle(
+                              fontSize: 20,
+                              decoration: job.done
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none),
+                        ),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white70,
+                              ),
+                              onPressed: job.done ? null : () => done(job),
+                              child: Text(
+                                "Done",
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => remove(job),
+                              child: Text(
+                                "Remove",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
