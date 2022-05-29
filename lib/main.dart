@@ -124,7 +124,11 @@ class _TodoListState extends State<TodoList> {
                   child: TextField(
                     controller: myController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10.0),
+                        ),
+                      ),
                       hintText: 'Enter new job',
                       fillColor: Colors.white,
                       filled: true,
@@ -132,55 +136,86 @@ class _TodoListState extends State<TodoList> {
                   ),
                 ),
                 SizedBox(
-              height: 15,
-            ),
-                TextButton(onPressed: add, child: Text("Add")),
+                  height: 15,
+                ),
+                MaterialButton(
+                  onPressed: add,
+                  color: Colors.orange,
+                  textColor: Colors.white,
+                  child: Icon(
+                    Icons.add,
+                    size: 50,
+                  ),
+                  padding: EdgeInsets.all(2),
+                  shape: CircleBorder(),
+                ),
               ],
             ),
             SizedBox(
               height: 5,
             ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (var job in jobList) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          job.name,
-                          style: TextStyle(
-                              fontSize: 20,
-                              decoration: job.done
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none),
-                        ),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white70,
+            Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var job in jobList) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            job.name,
+                            style: TextStyle(
+                                fontSize: 20,
+                                decoration: job.done
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none),
+                          ),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(20, 0),
+                                  padding: EdgeInsets.zero,
+                                  shape: CircleBorder(),
+                                  primary: Colors.green,
+                                ),
+                                onPressed: job.done ? null : () => done(job),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                                //Text(
+                                //   "Done",
+                                //   style: TextStyle(color: Colors.green),
+                                // ),
                               ),
-                              onPressed: job.done ? null : () => done(job),
-                              child: Text(
-                                "Done",
-                                style: TextStyle(color: Colors.green),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(20, 0),
+                                  padding: EdgeInsets.zero,
+                                  shape: CircleBorder(),
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () => remove(job),
+                                child: Icon(
+                                  Icons.delete_forever,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                                //Text(
+                                //"Remove",
+                                //style: TextStyle(color: Colors.red),
+                                //),
                               ),
-                            ),
-                            OutlinedButton(
-                              onPressed: () => remove(job),
-                              child: Text(
-                                "Remove",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ],
